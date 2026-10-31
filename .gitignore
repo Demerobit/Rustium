@@ -1,3 +1,6 @@
 /target/
 *.partial
 *.log
+
+minisign.key
+tools/
