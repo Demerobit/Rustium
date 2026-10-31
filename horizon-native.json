@@ -1,0 +1,9 @@
+{
+  "game": "26.3",
+  "hooks": 1,
+  "horizon": "9d979caa48a3bb58203319b9ea044db58c38e0d8",
+  "id": "rustium",
+  "mixins": "0d6b103c70633d8fd9443d8d0acd3aadaacedb06",
+  "schema": 1,
+  "version": "0.1.0"
+}
