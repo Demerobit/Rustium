@@ -48,6 +48,18 @@ bindings = [
   { name = "size", ty = "[u32; 2]",                  value = "size"        },
 ]
 
+# ── Hook: Entity Culling ──────────────────────────────────────────────────────
+[[injection]]
+id          = "entity_culling"
+kind        = "HEAD"
+cancellable = true
+target      = "horizon_client::game::entity_culling::Game<'_>::prepare_entity_culling"
+helper      = "entity_cull_hook.rs"
+bindings = [
+  { name = "game",   ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "camera", ty = "glam::DVec3",               value = "camera"      },
+]
+
 # ── Hook: game tick ───────────────────────────────────────────────────────────
 [[injection]]
 id      = "tick"

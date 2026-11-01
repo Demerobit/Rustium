@@ -18,8 +18,17 @@ fn rustium_click(game: &mut crate::game::Game<'_>, mod_id: &str, button: usize) 
             game.native_set_setting(m::ID, m::SETTING_FPS_MODE, next.as_str());
         }
 
-        // 1: Cycle UI & HUD FPS Throttle (Uncapped -> 30 FPS -> 60 FPS -> 15 FPS -> Uncapped)
+        // 1: Toggle Entity Culling (Sodium-style occlusion)
         1 => {
+            let current_on = game
+                .native_setting(m::ID, m::SETTING_ENTITY_CULLING)
+                .as_deref() != Some("false");
+            let next_val = if current_on { "false" } else { "true" };
+            game.native_set_setting(m::ID, m::SETTING_ENTITY_CULLING, next_val);
+        }
+
+        // 2: Cycle UI & HUD FPS Throttle (Uncapped -> 30 FPS -> 60 FPS -> 15 FPS -> Uncapped)
+        2 => {
             let current: u32 = game
                 .native_setting(m::ID, m::SETTING_HUD_RATE)
                 .and_then(|s| s.parse().ok())
@@ -34,8 +43,8 @@ fn rustium_click(game: &mut crate::game::Game<'_>, mod_id: &str, button: usize) 
             game.native_set_setting(m::ID, m::SETTING_HUD_RATE, &next.to_string());
         }
 
-        // 2: Cycle Corner
-        2 => {
+        // 3: Cycle Corner
+        3 => {
             let current = game
                 .native_setting(m::ID, m::SETTING_HUD_CORNER)
                 .unwrap_or_else(|| "tr".into());

@@ -13,9 +13,10 @@ pub const VERSION: &str = "0.1.0";
 pub const KEY_TOGGLE_FPS: &str = "toggle_fps";
 
 // ── Settings keys ─────────────────────────────────────────────────────────────
-pub const SETTING_FPS_MODE:   &str = "fps_mode";   // "off" | "simple" | "extended"
-pub const SETTING_HUD_RATE:   &str = "hud_rate";   // "1" | "5" | "10" | "20" | "30" | "60"
-pub const SETTING_HUD_CORNER: &str = "hud_corner"; // "tr" | "tl" | "br" | "bl"
+pub const SETTING_FPS_MODE:       &str = "fps_mode";       // "off" | "simple" | "extended"
+pub const SETTING_HUD_RATE:       &str = "hud_rate";       // "1" | "5" | "10" | "20" | "30" | "60"
+pub const SETTING_HUD_CORNER:     &str = "hud_corner";     // "tr" | "tl" | "br" | "bl"
+pub const SETTING_ENTITY_CULLING: &str = "entity_culling"; // "true" | "false"
 
 // ── FPS Display Mode ─────────────────────────────────────────────────────────
 
@@ -276,6 +277,8 @@ pub enum Cmd {
     CycleFpsMode,
     SetRate(u64),
     SetCorner(String),
+    ToggleCulling,
+    SetCulling(bool),
     Reset,
     Help,
     Unknown(String),
@@ -287,6 +290,9 @@ pub fn parse_cmd(raw: &str) -> Cmd {
         [] => Cmd::Status,
         ["help"] => Cmd::Help,
         ["reset"] => Cmd::Reset,
+        ["culling"] | ["cull"] => Cmd::ToggleCulling,
+        ["culling", "on"] | ["cull", "on"] | ["culling", "true"] | ["cull", "true"] => Cmd::SetCulling(true),
+        ["culling", "off"] | ["cull", "off"] | ["culling", "false"] | ["cull", "false"] => Cmd::SetCulling(false),
         ["fps"] | ["toggle"] => Cmd::CycleFpsMode,
         ["fps", mode] => match FpsMode::from_str_opt(mode) {
             Some(m) => Cmd::SetFpsMode(m),
