@@ -25,11 +25,8 @@ fn rustium_command(game: &mut crate::game::Game<'_>, command: &str, ran: &mut bo
                 .and_then(|s| s.parse().ok())
                 .unwrap_or(0);
             let ui_fps = if rate == 0 { "Uncapped".into() } else { format!("{rate} FPS") };
-            let culling_on = game.native_setting(m::ID, m::SETTING_ENTITY_CULLING)
-                .as_deref() != Some("false");
-            let culling_str = if culling_on { "ON" } else { "OFF" };
             game.native_chat(&format!(
-                "Rustium {ver} | Mode: {m} | Entity Culling: {culling_str} | UI Limit: {ui_fps} | Live: {live} | Min: {min} | Max: {max} | 1%: {low1}",
+                "Rustium {ver} | Mode: {m} | UI Limit: {ui_fps} | Live: {live} | Min: {min} | Max: {max} | 1%: {low1}",
                 ver = m::VERSION,
                 m   = mode.display(),
             ));
@@ -48,22 +45,6 @@ fn rustium_command(game: &mut crate::game::Game<'_>, command: &str, ran: &mut bo
             let next = mode.next();
             game.native_set_setting(m::ID, m::SETTING_FPS_MODE, next.as_str());
             game.native_chat(&format!("Rustium FPS: {}", next.display()));
-        }
-
-        m::Cmd::ToggleCulling => {
-            let current = game.native_setting(m::ID, m::SETTING_ENTITY_CULLING)
-                .as_deref() != Some("false");
-            let next = if current { "false" } else { "true" };
-            game.native_set_setting(m::ID, m::SETTING_ENTITY_CULLING, next);
-            let label = if next == "true" { "Enabled (Fast)" } else { "Disabled" };
-            game.native_chat(&format!("Rustium Entity Culling: {label}"));
-        }
-
-        m::Cmd::SetCulling(enabled) => {
-            let val = if enabled { "true" } else { "false" };
-            game.native_set_setting(m::ID, m::SETTING_ENTITY_CULLING, val);
-            let label = if enabled { "Enabled (Fast)" } else { "Disabled" };
-            game.native_chat(&format!("Rustium Entity Culling: {label}"));
         }
 
         m::Cmd::SetRate(rate) => {
@@ -94,10 +75,8 @@ fn rustium_command(game: &mut crate::game::Game<'_>, command: &str, ran: &mut bo
 
         m::Cmd::Help => {
             for line in [
-                "§eRustium commands (Sodium for Horizon):",
+                "§eRustium commands:",
                 "  /rustium                  — show live stats & mode",
-                "  /rustium culling          — toggle Entity Culling (on/off)",
-                "  /rustium culling <on|off> — set Entity Culling directly",
                 "  /rustium fps              — cycle mode (simple / extended / off)",
                 "  /rustium fps <simple|extended|off> — set mode directly",
                 "  /rustium rate <fps>       — set UI/HUD FPS limit (e.g. 30, 60, or 0 for uncapped)",

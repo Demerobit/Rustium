@@ -14,14 +14,7 @@ fn rustium_settings(game: &mut crate::game::Game<'_>, mod_id: &str, buttons: &mu
         .unwrap_or(m::FpsMode::Simple);
     buttons.push(format!("FPS Display: {}", mode.display()));
 
-    // 1: Entity Culling (Sodium-style occlusion culling)
-    let culling_on = game
-        .native_setting(m::ID, m::SETTING_ENTITY_CULLING)
-        .as_deref() != Some("false");
-    let culling_label = if culling_on { "ON (Fast)" } else { "OFF (Vanilla)" };
-    buttons.push(format!("Entity Culling: {culling_label}"));
-
-    // 2: UI & HUD FPS Throttle (Limits F3, Hotbar, Menus & UI FPS)
+    // 1: UI & HUD FPS Throttle (Limits F3, Hotbar, Menus & UI FPS)
     let rate_hz: u32 = game
         .native_setting(m::ID, m::SETTING_HUD_RATE)
         .and_then(|s| s.parse().ok())
@@ -35,7 +28,7 @@ fn rustium_settings(game: &mut crate::game::Game<'_>, mod_id: &str, buttons: &mu
     };
     buttons.push(format!("UI & HUD FPS: {rate_label}"));
 
-    // 3: HUD Position
+    // 2: HUD Position
     let corner_str = game
         .native_setting(m::ID, m::SETTING_HUD_CORNER)
         .unwrap_or_else(|| "tr".into());
